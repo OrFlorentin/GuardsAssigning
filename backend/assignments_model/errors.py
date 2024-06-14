@@ -1,0 +1,2 @@
+class InfeasibleModelException(Exception):
+    pass

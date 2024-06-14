@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv-dev
+  namespace: sudoku-dev
+  labels:
+    usage: mongo-pv-dev
+spec:
+  storageClassName: azurefile-sc
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  azureFile:
+    secretName: azure-secret
+    shareName: sudoku-file-mongo-dev
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv-prod
+  namespace: sudoku-prod
+  labels:
+    usage: mongo-pv-prod
+spec:
+  storageClassName: azurefile-sc
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  azureFile:
+    secretName: azure-secret
+    shareName: sudoku-file-mongo-prod
+    readOnly: false

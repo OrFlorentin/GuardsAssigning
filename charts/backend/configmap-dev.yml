@@ -1,0 +1,13 @@
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: backend-configmap 
+data:
+  # Configuration values can be set as key-value properties
+  database: mongodb
+  MONGO_INITDB_ROOT_USERNAME: root
+  MONGO_INITDB_ROOT_PASSWORD: root
+  DB_NAME: dev
+  DB_CONNECTION_STRING: mongodb://admin:admin@mongodb-service:27017/admin?replicaSet=rs0
+  MICROSOFT_LOGIN_REDIRECT_URI: https://sudoku-dev.073ed16829504d398ee5.eastus.aksapp.io/api/auth/get_token
+  ENVIRONMENT: development

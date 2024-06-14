@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+ frontend:
+  build:
+   context: frontend/
+   dockerfile: Dockerfile.prod
+  environment:
+  - NODE_OPTIONS=--openssl-legacy-provider
+  ports:
+  - 3000:80
+  depends_on:
+   - backend
+
+ backend:
+  platform: linux/amd64
+  build:
+   context: backend/
+   dockerfile: Dockerfile.prod
+  environment:
+   - DB_CONNECTION_STRING=mongodb://$MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_PASSWORD@mongodb:27017/?authSource=admin
+   - DB_NAME
+  ports:
+  - 8000:8000
+  depends_on:
+   - mongodb
+
+
+ mongodb:
+  image: mongo:latest
+  environment: 
+  - MONGO_INITDB_ROOT_USERNAME
+  - MONGO_INITDB_ROOT_PASSWORD
+  ports:
+  - 27017:27017
+  volumes:
+  - mongodb:/data/db
+  - mongodb_config:/data/configdb
+volumes:
+ mongodb:
+ mongodb_config:

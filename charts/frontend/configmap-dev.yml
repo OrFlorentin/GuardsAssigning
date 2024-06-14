@@ -1,0 +1,7 @@
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: frontend-configmap 
+data:
+  REACT_APP_BACKEND_BASE_URL: /api
+  REACT_APP_HOST_ENV: development

@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+ nginx:
+  build:
+    context: local_deployment/nginx/
+  ports:
+    - "80:80"
+  depends_on:
+   - backend
+   - frontend
+
+ frontend:
+  hostname: $FRONTEND_HOSTNAME
+  build:
+   context: frontend/
+  environment:
+  - REACT_APP_HOST_ENV=development
+  - NODE_OPTIONS=--openssl-legacy-provider
+  - REACT_APP_BACKEND_BASE_URL=/api
+  ports:
+  - 3000:3000
+  volumes:
+  - ./frontend:/app
+  - /app/node_modules
+  depends_on:
+   - backend
+
+ backend:
+  platform: linux/amd64
+  hostname: $BACKEND_HOSTNAME
+  build:
+   context: backend/
+  environment:
+   - ENVIRONMENT=development
+   - ROOT_PATH=/api
+   - DB_CONNECTION_STRING=mongodb://$MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_PASSWORD@$MONGO_HOSTNAME:27017/?authSource=admin
+   - DB_NAME
+   - MICROSOFT_LOGIN_REDIRECT_URI=http://localhost/api/auth/get_token
+  ports:
+  - 8000:8000
+  volumes:
+  - ./backend:/app
+  depends_on:
+   - mongodb
+
+
+ mongodb:
+  image: mongo:latest
+  hostname: $MONGO_HOSTNAME
+  environment: 
+  - MONGO_INITDB_ROOT_USERNAME
+  - MONGO_INITDB_ROOT_PASSWORD
+  ports:
+  - 27017:27017
+  volumes:
+  - mongodb:/data/db
+  - mongodb_config:/data/configdb
+volumes:
+ mongodb:
+ mongodb_config:
