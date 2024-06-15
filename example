@@ -1,1 +1,1 @@
-ashdasdklasjdl
+docker-compose -f docker-comopse.dev.yml up
