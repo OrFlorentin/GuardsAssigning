@@ -64,7 +64,6 @@ export default function BaseGuardDialog({
 
                                 <SelectField
                                     label="אוכלוסייה"
-                                    disabled={disablePopulationFields}
                                     defaultValue={values.populationType}
                                     onChange={(e) => setFieldValue('populationType', e.target.value)}
                                 >
